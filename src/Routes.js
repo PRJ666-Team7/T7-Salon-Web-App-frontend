@@ -4,6 +4,8 @@ import Booking from './containers/Booking/Booking'
 import Contact from './containers/Contact/Contact'
 import Home from './containers/Home/Home'
 import Login from './containers/Login/Login'
+import ForgotPassword from './containers/ForgotPassword/ForgotPassword'
+import PasswordReset from './containers/PasswordReset/PasswordReset'
 
 import {
     BrowserRouter as Router,
@@ -26,6 +28,12 @@ export class Routes extends Component {
                 </Route>
                 <Route path="/login">
                     <Login />
+                </Route>
+                <Route path="/forgotPassword">
+                    <ForgotPassword />
+                </Route>
+                <Route path="/passwordReset">
+                    <PasswordReset />
                 </Route>
                 <Route path="/">
                     <Home />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Grid, Typography, withStyles, Paper, TextField, ButtonBase, Button} from '@material-ui/core';
+import {Grid, Typography, withStyles, TextField, Button} from '@material-ui/core';
 import breakpointHelper from '../../components/helpers/breakpointHelper'
 import MobileWindow from '../../components/UI/MobileWindow/MobileWindow'
 
@@ -10,22 +10,7 @@ import MobileWindow from '../../components/UI/MobileWindow/MobileWindow'
     }
  }))(Typography);
 
- const ForgotEmail = withStyles((theme) => ({
-    root: {
-        color: "blue",
-        paddingTop: theme.spacing(2),
-        paddingLeft: "100%",
-        minWidth: "100px"
-    }
- }))(Typography);
-
- const LoginButton = withStyles((theme) => ({
-    root: {
-    //   backgroundColor: "#00e6e6"  
-    }
- }))(Button);
-
-export class Contact extends Component {
+export class ForgotPassword extends Component {
     render() {
         return (
             <Grid container>
@@ -35,21 +20,13 @@ export class Contact extends Component {
                             <Grid {...breakpointHelper.full}>
                                 <Grid container justify="center">
                                     <Title>
-                                        Sign in
+                                        Reset Password
                                     </Title>
                                 </Grid>
                             </Grid>
                             <Typography>
-                                Login into your Sherry's Nails and Spa account
+                                Enter a new password
                             </Typography>
-                        </Grid>
-
-                        <Grid container justify="center" {...breakpointHelper.full} style={{paddingTop: "20px"}}>
-                            <TextField
-                                id="filled-required"
-                                label="Email"
-                                variant="outlined"
-                                />
                         </Grid>
 
                         <Grid container justify="center" {...breakpointHelper.full} style={{paddingTop: "20px"}}>
@@ -59,17 +36,18 @@ export class Contact extends Component {
                                 variant="outlined"
                                 />
                         </Grid>
-                        <Grid container justify="center">
-                            <ButtonBase onClick={() => window.location.href="/forgotPassword"}>
-                                <ForgotEmail>
-                                    Forgot email?
-                                </ForgotEmail>
-                            </ButtonBase>
-                        </Grid>
                         <Grid container justify="center" {...breakpointHelper.full} style={{paddingTop: "20px"}}>
-                            <LoginButton variant="contained">
-                                Login
-                            </LoginButton>
+                            <TextField
+                                id="filled-required"
+                                label="Confirm password"
+                                variant="outlined"
+                                />
+                        </Grid>
+                        
+                        <Grid container justify="center" {...breakpointHelper.full} style={{paddingTop: "20px"}}>
+                            <Button variant="contained">
+                                Reset Password
+                            </Button>
                         </Grid>
                     </Grid>
                 </MobileWindow>
@@ -78,4 +56,4 @@ export class Contact extends Component {
         }
     }
 
-export default Contact
+export default ForgotPassword
