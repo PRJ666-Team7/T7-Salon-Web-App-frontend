@@ -3,6 +3,7 @@ import About from './containers/About/About'
 import Booking from './containers/Booking/Booking'
 import Contact from './containers/Contact/Contact'
 import Home from './containers/Home/Home'
+import Login from './containers/Login/Login'
 
 import {
     BrowserRouter as Router,
@@ -22,6 +23,9 @@ export class Routes extends Component {
                 </Route>
                 <Route path="/booking">
                     <Booking />
+                </Route>
+                <Route path="/login">
+                    <Login />
                 </Route>
                 <Route path="/">
                     <Home />

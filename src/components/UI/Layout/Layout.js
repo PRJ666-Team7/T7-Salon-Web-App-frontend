@@ -1,8 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { NavLink, useHistory } from "react-router-dom";
-import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Button, Typography, IconButton, AppBar, Toolbar} from '@material-ui/core';
+import { useHistory } from "react-router-dom";
+import {Grid, Button, Typography, IconButton, AppBar, Toolbar, makeStyles, Menu, MenuItem, ButtonBase } from '@material-ui/core';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,7 +21,8 @@ const useStyles = makeStyles(theme => ({
         borderStyle: "solid",
         borderWidth: "2px",
         minWidth: "340px",
-        maxWidth: "340px"
+        maxWidth: "340px",
+        color: "white"
     },
     SmallerTitle: {
         fontSize: "21px",
@@ -53,6 +53,9 @@ const useStyles = makeStyles(theme => ({
     Content: {
         minHeight: "92vh"
     },
+    MobileContent: {
+        minHeight: "83vh"
+    },
     Footer: {
         borderStyle: "solid",
         borderWidth: "2px 0px 0px 0px",
@@ -61,6 +64,7 @@ const useStyles = makeStyles(theme => ({
     },
     FooterItems: {
         paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
         minWidth: "250px"
     },
     Copyright: {
@@ -100,8 +104,17 @@ const useStyles = makeStyles(theme => ({
 
 export default function(props) {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
     const currentRoute = useHistory().location.pathname.toLowerCase();
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     function getWindowDimensions() {
         const { innerWidth: width, innerHeight: height } = window;
@@ -120,32 +133,34 @@ export default function(props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    console.log("window.innerHeight", window.innerWidth)
-    console.log("innerWidth", windowDimensions)
-
     return (
-        <Grid container justify="center" style={{minHeight: '100vh'}}>
+        <Grid container style={{minHeight: '100vh'}} direction="column">
             <Grid container className={classes.HeaderColor} container justify="flex-start" alignItems="center" {...breakpointHelper.full}>
-                {windowDimensions.width >= 1020 ? (
+                {windowDimensions.width >= 1330 ? (
                     <React.Fragment>
                         <Grid {...breakpointHelper.third}>
-                            <Typography className={classes.Title} >
-                                Sherry's Nails and Spa
-                            </Typography>
+                            <ButtonBase onClick={() => window.location.href="/"}>
+                                <Typography className={classes.Title} >
+                                    Sherry's Nails and Spa
+                                </Typography>
+                            </ButtonBase>
                         </Grid>
                         <Grid {...breakpointHelper.twoThird}>
                             <Grid container justify="center">
-                                <Button className={currentRoute == '/' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" color="primary" href="/">
+                                <Button className={currentRoute == '/' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/">
                                     Home
                                 </Button>
-                                <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" color="primary" href="/booking">
+                                <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/booking">
                                     Book Appointment
                                 </Button>
-                                <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" color="primary" href="/about">
+                                <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/about">
                                     About Us
                                 </Button>
-                                <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" color="primary" href="/contact">
+                                <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/contact">
                                     Contact Us
+                                </Button>
+                                <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/login">
+                                    Login
                                 </Button>
                             </Grid>
                         </Grid>
@@ -155,15 +170,28 @@ export default function(props) {
                         <Toolbar>
                             <Grid container {...breakpointHelper.full}>
                                 <Grid {...breakpointHelper.threeQuarter}>
-                                    <Typography className={windowDimensions.width >= 520 ? classes.Title : `${classes.Title} ${classes.SmallerTitle}`} >
-                                        Sherry's Nails and Spa
-                                    </Typography>
+                                    <ButtonBase onClick={() => window.location.href="/"}>
+                                        <Typography className={windowDimensions.width >= 520 ? classes.Title : `${classes.Title} ${classes.SmallerTitle}`} >
+                                            Sherry's Nails and Spa
+                                        </Typography>
+                                    </ButtonBase>
                                 </Grid>
                                 <Grid {...breakpointHelper.quarter}>
                                     <Grid container justify="flex-end" alignItems="center" style={{height: "100%"}}>
-                                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                                        <IconButton onClick={handleClick} className={classes.menuButton} >
                                             <MenuIcon style={{color: "grey", fontSize: 30}}/>
                                         </IconButton>
+                                        <Menu
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleClose}
+                                            >
+                                            <MenuItem onClick={() => window.location.href="/booking"}>Booking</MenuItem>
+                                            <MenuItem onClick={() => window.location.href="/about"}>About</MenuItem>
+                                            <MenuItem onClick={() => window.location.href="/contact"}>Contact</MenuItem>
+                                            <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
+                                        </Menu>
                                     </Grid>
                                 </Grid>
                             </Grid>
@@ -171,8 +199,8 @@ export default function(props) {
                     </AppBar>
                 )}
             </Grid>
-                    
-            <Grid container className={classes.Content} justify="center">
+
+            <Grid container className={windowDimensions.width >= 930 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
                 {props.children}
             </Grid>
 
@@ -182,27 +210,32 @@ export default function(props) {
                 alignItems="center" 
                 className={classes.Footer} 
                 style={{minHeight: '8vh'}}
-                direction={windowDimensions.width > 1000 ? "row" : "column"}
             >
-                <Grid container justify="center" {...breakpointHelper.third} className={classes.FooterItems}>
-                    <Typography className={classes.Copyright}>
-                        Copyright © 2021 T7
-                    </Typography>
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                    <Grid container justify="center">
+                        <Typography className={classes.Copyright}>
+                            Copyright © 2021 T7
+                        </Typography>
+                    </Grid>
                 </Grid>
 
-                <Grid container justify="center" {...breakpointHelper.third} className={classes.FooterItems}>
-                    <Button className={classes.Promotional}>
-                        Subscribe to our promotional emails
-                    </Button>
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                    <Grid container justify="center">
+                        <Button className={classes.Promotional}>
+                            Subscribe to our promotional emails
+                        </Button>
+                    </Grid>
                 </Grid>
 
-                <Grid container justify="center"{...breakpointHelper.third} className={classes.FooterItems}>
-                    <IconButton className={classes.IconButton} href="https://www.facebook.com/">
-                        <FacebookIcon className={classes.FacebookIconSize}/>
-                    </IconButton>
-                    <IconButton className={`${classes.IconButton} ${classes.Twitter}`} href="https://twitter.com/home">
-                        <TwitterIcon className={classes.TwitterIconSize}/>
-                    </IconButton>
+                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                    <Grid container justify="center">
+                        <IconButton className={classes.IconButton} href="https://www.facebook.com/">
+                            <FacebookIcon className={classes.FacebookIconSize}/>
+                        </IconButton>
+                        <IconButton className={`${classes.IconButton} ${classes.Twitter}`} href="https://twitter.com/home">
+                            <TwitterIcon className={classes.TwitterIconSize}/>
+                        </IconButton>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
