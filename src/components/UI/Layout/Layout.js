@@ -20,7 +20,8 @@ const useStyles = makeStyles(theme => ({
     },
     HeaderColor: {
         background: "#dae8fc",
-        padding: "0px"
+        padding: "0px",
+        position: "fixed"
     },
     NavButton: {
         background: "#1ba0e2",
