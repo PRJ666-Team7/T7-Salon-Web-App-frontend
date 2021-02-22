@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Grid, Typography, withStyles } from '@material-ui/core';
 import breakpointHelper from '../../components/helpers/breakpointHelper'
+import {Helmet} from "react-helmet";
 
 const Header = withStyles((theme) => ({
     root: {
@@ -19,6 +20,10 @@ export class About extends Component {
     render() {
         return (
             <Grid>
+                <Helmet>
+                    <title>About Us</title>
+                </Helmet>
+
                 <Grid container justify="center">
                     <Grid container justify="center" {...breakpointHelper.full}>
                         <Header>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Grid, Typography, withStyles, TextField, Button} from '@material-ui/core';
 import breakpointHelper from '../../components/helpers/breakpointHelper'
 import MobileWindow from '../../components/UI/MobileWindow/MobileWindow'
+import {Helmet} from "react-helmet";
 
  const Title = withStyles((theme) => ({
     root: {
@@ -14,6 +15,10 @@ export class ForgotPassword extends Component {
     render() {
         return (
             <Grid container>
+                <Helmet>
+                    <title>Forgot Recovery</title>
+                </Helmet>
+
                 <MobileWindow elevation={5}>
                     <Grid container justify="center" {...breakpointHelper.full}>
                         <Grid container justify="center" {...breakpointHelper.full}>
