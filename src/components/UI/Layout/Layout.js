@@ -20,14 +20,14 @@ const useStyles = makeStyles(theme => ({
         borderColor: "#000000",
         borderStyle: "solid",
         borderWidth: "2px",
-        minWidth: "340px",
-        maxWidth: "340px",
+        minWidth: "360px",
+        maxWidth: "360px",
         color: "white"
     },
     SmallerTitle: {
         fontSize: "21px",
-        minWidth: "100px",
-        maxWidth: "230px !important"
+        minWidth: "150px",
+        maxWidth: "250px !important"
     },
     HeaderColor: {
         background: "#dae8fc",

@@ -3,7 +3,7 @@ import { MenuItem, Typography, Container, TextField, Checkbox, FormLabel, Button
 import { FormGroup, FormControl, FormControlLabel } from '@material-ui/core';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import { makeStyles } from '@material-ui/core/styles';
-
+import {Helmet} from "react-helmet";
 
 const employees = [
     {
@@ -84,6 +84,10 @@ function Appointment(){
     
     return (
         <Container component="main" maxWidth="xs">
+            <Helmet>
+                <title>Booking</title>
+            </Helmet>
+
             <CssBaseline />
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>

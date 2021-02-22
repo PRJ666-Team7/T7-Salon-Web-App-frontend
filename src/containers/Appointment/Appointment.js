@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Paper, Typography, Button, Box, makeStyles } from '@material-ui/core';
+import {Helmet} from "react-helmet";
 
 const useStyles = makeStyles(() => ({
     Button: {
@@ -13,6 +14,10 @@ function Appointment(){
 
     return (
         <Grid container spacing={1}>
+            <Helmet>
+                <title>Appointment</title>
+            </Helmet>
+
             <Grid item xs={9}>
                 <Box p={{xs:4, sm:4}}>
                     <Paper>
