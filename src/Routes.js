@@ -7,7 +7,7 @@ import Login from './containers/Login/Login'
 import ForgotPassword from './containers/ForgotPassword/ForgotPassword'
 import PasswordReset from './containers/PasswordReset/PasswordReset'
 import SignUp from './containers/SignUp/SignUp'
-
+import Appointment from './containers/Appointment/Appointment'
 import {
     BrowserRouter as Router,
     Switch,
@@ -38,6 +38,9 @@ export class Routes extends Component {
                 </Route>
                 <Route path="/signUp">
                     <SignUp />
+                </Route>
+                <Route path='/appointment'>
+                    <Appointment />
                 </Route>
                 <Route path="/">
                     <Home />
