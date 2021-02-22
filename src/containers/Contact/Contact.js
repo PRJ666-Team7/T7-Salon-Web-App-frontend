@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
     },
 
     Typography:{
-        color: "#ffffff"
+        color: "black"
     }
 }));
 
