@@ -66,7 +66,7 @@ export class SignUp extends Component {
                         
                         <Grid container justify="center">
                             <Grid>
-                                <ButtonBase onClick={() => window.location.href="/forgotPassword"}>
+                                <ButtonBase onClick={() => window.location.href="/login"}>
                                     <LinkText>
                                         Already a member? Log In
                                     </LinkText>
