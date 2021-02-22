@@ -54,7 +54,8 @@ const useStyles = makeStyles(theme => ({
         minHeight: "92vh"
     },
     MobileContent: {
-        minHeight: "83vh"
+        minHeight: "88vh"
+        // minHeight: "83vh"
     },
     Footer: {
         borderStyle: "solid",
@@ -200,7 +201,7 @@ export default function(props) {
                 )}
             </Grid>
 
-            <Grid container className={windowDimensions.width >= 930 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
+            <Grid container className={windowDimensions.width >= 960 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
                 {props.children}
             </Grid>
 
@@ -211,23 +212,23 @@ export default function(props) {
                 className={classes.Footer} 
                 style={{minHeight: '8vh'}}
             >
-                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <Typography className={classes.Copyright}>
                             Copyright © 2021 T7
                         </Typography>
                     </Grid>
                 </Grid>
-
+{/* 
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <Button className={classes.Promotional}>
                             Subscribe to our promotional emails
                         </Button>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <IconButton className={classes.IconButton} href="https://www.facebook.com/">
                             <FacebookIcon className={classes.FacebookIconSize}/>

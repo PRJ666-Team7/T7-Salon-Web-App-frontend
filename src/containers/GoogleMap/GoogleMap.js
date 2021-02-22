@@ -7,7 +7,6 @@ import PersonIcon from '@material-ui/icons/Person';
 import { Box, Tooltip } from '@material-ui/core';
 
 function GoogleMap(){
-
     const [userLocation, setUserLocation] = useState(null);
     
     useEffect(()=>{

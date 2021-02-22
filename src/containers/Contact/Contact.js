@@ -19,7 +19,6 @@ let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
 
 function Contact(){
-
     const classes = useStyles();
 
     return(
