@@ -3,6 +3,7 @@ import GoogleMap from '../GoogleMap/GoogleMap';
 import { Grid, Paper, Box, Typography, makeStyles, createMuiTheme, responsiveFontSizes, MuiThemeProvider} from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import BusinessIcon from '@material-ui/icons/Business';
+import {Helmet} from "react-helmet";
 
 const useStyles = makeStyles(() => ({
     Paper: {
@@ -24,6 +25,9 @@ function Contact(){
     return(
         <MuiThemeProvider theme={theme}>
         <Grid container>
+            <Helmet>
+                <title>Contacts</title>
+            </Helmet>
 
             <Grid item xs={12}>
                 <Box pt={5} pl={{ xs:1, sm:2, md:10 }} pr={{ xs:1, sm:2, md:10 }} pb={5}>
