@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
         background: "#dae8fc",
         padding: "0px",
         position: "fixed",
+        zIndex: 99
     },
     NavButton: {
         height: theme.spacing(6),
@@ -51,11 +52,12 @@ const useStyles = makeStyles(theme => ({
         background: "#1ba0e2 !important",
     },
     Content: {
-        minHeight: "92vh"
+        minHeight: "92vh",
+        marginTop: "10vh"
     },
     MobileContent: {
-        minHeight: "88vh"
-        // minHeight: "83vh"
+        minHeight: "88vh",
+        marginTop: "10vh"
     },
     Footer: {
         borderStyle: "solid",
@@ -135,7 +137,7 @@ export default function(props) {
     }, []);
 
     return (
-        <Grid container style={{minHeight: '100vh'}} direction="column">
+        <Grid container style={{minHeight: '100vh'}} direction="column" >
             <Grid container className={classes.HeaderColor} container justify="flex-start" alignItems="center" {...breakpointHelper.full}>
                 {windowDimensions.width >= 1330 ? (
                     <React.Fragment>
@@ -201,7 +203,7 @@ export default function(props) {
                 )}
             </Grid>
 
-            <Grid container className={windowDimensions.width >= 960 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
+            <Grid container className={windowDimensions.width >= 960 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} >
                 {props.children}
             </Grid>
 
