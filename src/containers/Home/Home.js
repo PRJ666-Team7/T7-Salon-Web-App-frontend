@@ -103,7 +103,7 @@ export default function Home() {
 
             <Grid item xs={12} className={classes.itemGrid}>
                 <Paper className={classes.paperButton}>
-                <Button variant="contained" color="primary" size="lg" className={classes.aptButton} onClick={()=> history.push("/booking")}>
+                <Button variant="contained" color="primary" size="lg" className={classes.aptButton} onClick={() => window.location.href="/booking"}>
                     Book Appointment
                 </Button>
                 </Paper>
