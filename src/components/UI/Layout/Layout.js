@@ -6,6 +6,7 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import MenuIcon from '@material-ui/icons/Menu';
 import breakpointHelper from '../../helpers/breakpointHelper'
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
     Nav: {
@@ -124,6 +125,12 @@ export default function(props) {
         };
     }
 
+    function signOut() {
+        Cookies.remove("jwt")
+        Cookies.remove("user")
+        window.location = "/login"
+    }
+
     useEffect(() => {
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
@@ -159,9 +166,14 @@ export default function(props) {
                                 <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/contact">
                                     Contact Us
                                 </Button>
+                                { Cookies.get('jwt') ?
+                                <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" onClick={signOut}>
+                                    Sign Out
+                                </Button> :
                                 <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/login">
                                     Login
                                 </Button>
+}
                             </Grid>
                         </Grid>
                     </React.Fragment>
@@ -190,7 +202,10 @@ export default function(props) {
                                             <MenuItem onClick={() => window.location.href="/booking"}>Booking</MenuItem>
                                             <MenuItem onClick={() => window.location.href="/about"}>About</MenuItem>
                                             <MenuItem onClick={() => window.location.href="/contact"}>Contact</MenuItem>
-                                            <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
+                                            { Cookies.get('jwt') ?
+                                                <MenuItem onClick={signOut}>Sign Out</MenuItem> :
+                                                <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
+                                            }
                                         </Menu>
                                     </Grid>
                                 </Grid>
