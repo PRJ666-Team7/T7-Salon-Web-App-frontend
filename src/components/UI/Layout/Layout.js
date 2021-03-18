@@ -21,19 +21,20 @@ const useStyles = makeStyles(theme => ({
         borderColor: "#000000",
         borderStyle: "solid",
         borderWidth: "2px",
-        minWidth: "340px",
-        maxWidth: "340px",
+        minWidth: "360px",
+        maxWidth: "360px",
         color: "white"
     },
     SmallerTitle: {
         fontSize: "21px",
-        minWidth: "100px",
-        maxWidth: "230px !important"
+        minWidth: "150px",
+        maxWidth: "250px !important"
     },
     HeaderColor: {
         background: "#dae8fc",
         padding: "0px",
         position: "fixed",
+        zIndex: 99
     },
     NavButton: {
         height: theme.spacing(6),
@@ -52,10 +53,12 @@ const useStyles = makeStyles(theme => ({
         background: "#1ba0e2 !important",
     },
     Content: {
-        minHeight: "92vh"
+        minHeight: "92vh",
+        marginTop: "10vh"
     },
     MobileContent: {
-        minHeight: "83vh"
+        minHeight: "88vh",
+        marginTop: "10vh"
     },
     Footer: {
         borderStyle: "solid",
@@ -148,7 +151,7 @@ export default function(props) {
     }, []);
 
     return (
-        <Grid container style={{minHeight: '100vh'}} direction="column">
+        <Grid container style={{minHeight: '100vh'}} direction="column" >
             <Grid container className={classes.HeaderColor} container justify="flex-start" alignItems="center" {...breakpointHelper.full}>
                 {windowDimensions.width >= 1330 ? (
                     <React.Fragment>
@@ -224,7 +227,7 @@ export default function(props) {
             
             {user && <Typography className={classes.UserGreeting}>Hello, {user.fname}</Typography>}
 
-            <Grid container className={windowDimensions.width >= 930 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
+            <Grid container className={windowDimensions.width >= 960 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} >
                 {props.children}
             </Grid>
 
@@ -235,23 +238,23 @@ export default function(props) {
                 className={classes.Footer} 
                 style={{minHeight: '8vh'}}
             >
-                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <Typography className={classes.Copyright}>
                             Copyright © 2021 T7
                         </Typography>
                     </Grid>
                 </Grid>
-
+{/* 
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <Button className={classes.Promotional}>
                             Subscribe to our promotional emails
                         </Button>
                     </Grid>
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className={classes.FooterItems}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.FooterItems}>
                     <Grid container justify="center">
                         <IconButton className={classes.IconButton} href="https://www.facebook.com/">
                             <FacebookIcon className={classes.FacebookIconSize}/>
