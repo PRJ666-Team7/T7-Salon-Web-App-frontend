@@ -5,6 +5,7 @@ import MobileWindow from '../../components/UI/MobileWindow/MobileWindow'
 import { Helmet } from "react-helmet";
 import axois from '../../components/helpers/axios'
 import Cookies from 'js-cookie';
+import { Alert } from '@material-ui/lab';
 
 const Title = withStyles((theme) => ({
     root: {
@@ -40,6 +41,7 @@ const LoginButton = withStyles((theme) => ({
 export default function Login() {
     const [value, setValue] = React.useState({email: '', password: ''});
     const [error, setError] = React.useState({email: '', password: ''});
+    const [serverError, setServerError] = React.useState(false);
 
     const submitHandler = async (event) => {
         const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -71,12 +73,15 @@ export default function Login() {
                 password: value.password
             })
             .then(function (response) {
-                Cookies.set('user', response.data.user, { expires: 7 });
-                Cookies.set('jwt', response.data.token, { expires: 7 });
-
-                if (Cookies.get('jwt')){
-                    console.log("Cookies", Cookies.get('jwt'))
-                    window.location = "/"
+                if (response.data.status == "success") {
+                    Cookies.set('user', response.data.user, { expires: 7 });
+                    Cookies.set('jwt', response.data.token, { expires: 7 });
+                    
+                    if (Cookies.get('jwt')){
+                        window.location = "/"
+                    }
+                } else {
+                    setServerError(true)
                 }
             })
         }
@@ -88,6 +93,12 @@ export default function Login() {
             [event.target.id]: event.target.value
         });
     };
+
+    const keyPress = (event) => {
+        if(event.keyCode == 13){
+           submitHandler()
+        }
+    }
 
     return (
         <Grid container>
@@ -110,6 +121,8 @@ export default function Login() {
                         </Typography>
                     </Grid>
 
+                    {serverError && <Alert severity="error" onClose={() => setServerError(false)}>Incorrect password or email</Alert>}
+
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
                         <TextField
                             id="email"
@@ -118,6 +131,7 @@ export default function Login() {
                             onChange={handleChange}
                             error={error.email != ''}
                             helperText={error.email}
+                            onKeyDown={keyPress}
                         />
                     </Grid>
 
@@ -130,11 +144,12 @@ export default function Login() {
                             error={error.password != ''}
                             helperText={error.password}
                             type="password"
+                            onKeyDown={keyPress}
                         />
                     </Grid>
                     <Grid container justify="center">
                         <Grid>
-                            <ButtonBase onClick={() => window.location.href = "/signUp"}>
+                            <ButtonBase onClick={() => window.location.href = "/signUp"} >
                                 <SignUp>
                                     Sign up
                                 </SignUp>

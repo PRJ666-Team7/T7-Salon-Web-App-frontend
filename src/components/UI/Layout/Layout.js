@@ -100,6 +100,12 @@ const useStyles = makeStyles(theme => ({
     },
     TwitterIconSize: {
         fontSize: 30
+    },
+    UserGreeting: {
+        position: 'absolute',
+        top: '80px',
+        right: '10px',
+        color: '#3b3b3b'
     }
 }));
 
@@ -108,7 +114,8 @@ export default function(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
     const currentRoute = useHistory().location.pathname.toLowerCase();
-
+    const user = Cookies.get('user') && JSON.parse(Cookies.get('user'))
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
       };
@@ -173,7 +180,7 @@ export default function(props) {
                                 <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/login">
                                     Login
                                 </Button>
-}
+                                }
                             </Grid>
                         </Grid>
                     </React.Fragment>
@@ -214,6 +221,8 @@ export default function(props) {
                     </AppBar>
                 )}
             </Grid>
+            
+            {user && <Typography className={classes.UserGreeting}>Hello, {user.fname}</Typography>}
 
             <Grid container className={windowDimensions.width >= 930 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} style={{paddingTop: "10vh"}}>
                 {props.children}

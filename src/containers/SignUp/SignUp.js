@@ -5,6 +5,7 @@ import MobileWindow from '../../components/UI/MobileWindow/MobileWindow'
 import {Helmet} from "react-helmet";
 import axois from '../../components/helpers/axios'
 import Cookies from 'js-cookie';
+import { Alert } from '@material-ui/lab';
 
  const Title = withStyles((theme) => ({
     root: {
@@ -30,16 +31,15 @@ import Cookies from 'js-cookie';
 export default function SignUp() {
     const [value, setValue] = React.useState({email: '', fname: '', lname: '', phone: '', password: '', password2: ''});
     const [error, setError] = React.useState({email: '', fname: '', lname: '', phone: '', password: '', password2: ''});
+    const [serverError, setServerError] = React.useState(false);
 
     useEffect(() => {
         if (Cookies.get('jwt')){
-            console.log("Cookies", Cookies.get('jwt'))
             window.location = "/"
         }
     }, [])
 
     const handleChange = (event) => {
-        console.log("even", event.target.type)
         setValue({
             ...value,
             [event.target.id]: event.target.value
@@ -60,6 +60,10 @@ export default function SignUp() {
             valid = false;
         } else if (value.email.length == 0){
             errors.email = "Email is required"
+            valid = false;
+        } else if (value.email.length > 50){
+            errors.email = "Email must between 1 - 50"
+            valid = false;
         } else {
             errors.email = ""
         }
@@ -70,6 +74,9 @@ export default function SignUp() {
         } else if (value.fname.length == 0){
             errors.fname = "First name is required"
             valid = false;
+        } else if (value.fname.length > 45){
+            errors.fname = "First name must between 1 - 45"
+            valid = false;
         } else {
             errors.fname = ""
         }
@@ -79,6 +86,9 @@ export default function SignUp() {
             valid = false;
         } else if (!value.lname.length > 0){
             errors.lname = "Last name is required"
+            valid = false;
+        } else if (value.lname.length > 45){
+            errors.lname = "Last name must between 1 - 45"
             valid = false;
         } else {
             errors.lname = ""
@@ -100,14 +110,19 @@ export default function SignUp() {
         } else if (!value.password.length > 0){
             errors.password= "Password is required"
             valid = false;
+        } else if (value.password.length > 30){
+            errors.password= "Password must be between 8 - 30"
+            valid = false;
         } else {
             errors.password= ""
         }
 
-        if (value.password == value.password2) {
+        if (value.password != value.password2) {
             errors.password2= "Password do not match"
+            valid = false;
         } else if (!value.password2.length > 0){
             errors.password2= "Confirm password is required"
+            valid = false;
         } else {
             errors.password2= ""
         }
@@ -117,16 +132,25 @@ export default function SignUp() {
         if (valid) {
             axois.post('/signup', {...value})
                 .then(function (response) {
-                    Cookies.set('user', response.data.user, { expires: 7 });
-                    Cookies.set('jwt', response.data.token, { expires: 7 });
-
-                    if (Cookies.get('jwt')){
-                        console.log("Cookies", Cookies.get('jwt'))
-                        window.location = "/"
+                    if (response.data.status == "success") {
+                        Cookies.set('user', {...response.data.user}, { expires: 7 });
+                        Cookies.set('jwt', response.data.token, { expires: 7 });
+                        
+                        if (Cookies.get('jwt')){
+                            window.location = "/"
+                        }
+                    } else {
+                        setServerError(true)
                     }
                 })
         }
     };
+
+    const keyPress = (event) => {
+        if(event.keyCode == 13){
+            handleSubmit()
+        }
+    }
 
     return (
         <Grid container>
@@ -149,6 +173,8 @@ export default function SignUp() {
                         </Typography>
                     </Grid>
 
+                    {serverError && <Alert severity="error" onClose={() => setServerError(false)}>Invalid </Alert>}
+
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
                         <TextInput
                             id="email"
@@ -157,6 +183,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             error={error.email != ''}
                             helperText={error.email}
+                            onKeyDown={keyPress}
                         />
                     </Grid>
 
@@ -168,6 +195,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             error={error.fname != ''}
                             helperText={error.fname}
+                            onKeyDown={keyPress}
                         />
                     </Grid>
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
@@ -178,6 +206,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             error={error.lname != ''}
                             helperText={error.lname}
+                            onKeyDown={keyPress}
                         />
                     </Grid>
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
@@ -188,6 +217,7 @@ export default function SignUp() {
                             onChange={handleChange}
                             error={error.phone != ''}
                             helperText={error.phone}
+                            onKeyDown={keyPress}
                         />
                     </Grid>
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
@@ -199,6 +229,7 @@ export default function SignUp() {
                             error={error.password != ''}
                             helperText={error.password}
                             type="password"
+                            onKeyDown={keyPress}
                         />
                     </Grid>
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
@@ -210,6 +241,7 @@ export default function SignUp() {
                             error={error.password2 != ''}
                             helperText={error.password2}
                             type="password"
+                            onKeyDown={keyPress}
                         />
                     </Grid>
 
