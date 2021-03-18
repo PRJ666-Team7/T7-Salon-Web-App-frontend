@@ -1,118 +1,97 @@
-import React from 'react';
-import { Grid, Paper, Typography, Button, Box, makeStyles } from '@material-ui/core';
+import React, {useEffect, useState} from 'react';
+import { Grid, Paper, Typography, Button, makeStyles } from '@material-ui/core';
 import {Helmet} from "react-helmet";
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
+    mainGrid: {
+        marginTop: '3vh',
+        marginLeft: '20%',
+        marginRight: '20%',
+        flexBasis: 'inherit',
+    },
     Button: {
        zIndex: 2
     }
 }));
 
 function Appointment(){
+    const [users, setUser] = useState([{name: "Wei", phone: "6475556666", service: "Pedicure", time: "2020-10-02 11:30AM"}])
 
     const classes = useStyles();
 
+
+    useEffect(() =>  {    
+        async function getData(){
+            var data = await axios({
+                method: 'GET',
+                url: 'http://localhost:8000/appointments',
+                setTimeout: 5000,
+            })
+              
+            setUser(data.data);
+        }
+        getData();
+    },[])
+
+
+
+    function onClickCancel(user) {
+        let result = window.confirm("Are you sure you want to remove this appointment?");
+        if(result){
+            let newArr = users.filter(e=> e !== user);
+            console.log(newArr)
+            setUser([...newArr]);
+        }
+    };
+
+
     return (
-        <Grid container spacing={1}>
+        <Grid className={classes.mainGrid}>
+
             <Helmet>
-                <title>Appointment</title>
+                <title>
+                    Appointment
+                </title>
             </Helmet>
 
-            <Grid item xs={9}>
-                <Box p={{xs:4, sm:4}}>
-                    <Paper>
-                        <Typography>
-                            Customer Name: Random Name
-                        </Typography>
-                        <Typography>
-                            Customer Phone Number: 647-555-1111
-                        </Typography>
-                        <Typography>
-                            Service: Pedicure
-                        </Typography>
-                        <Typography>
-                            Date and Time: 2020-10-02 11:30AM
-                        </Typography>
-                    </Paper>
-                </Box>
-            </Grid>
-            <Grid item xs={3}>
-                <Box p={{xs:3, sm:4}}>
-                    <Button color="secondary">Delete</Button>
-                    <Button color="primary">Edit</Button>
-                </Box>
-            </Grid>
-            <Grid item xs={9}>
-                <Box p={{xs:4, sm:4}}>
-                    <Paper>
-                        <Typography>
-                            Customer Name: Random Name
-                        </Typography>
-                        <Typography>
-                            Customer Phone Number: 647-555-1111
-                        </Typography>
-                        <Typography>
-                            Service: Pedicure
-                        </Typography>
-                        <Typography>
-                            Date and Time: 2020-10-02 11:30AM
-                        </Typography>
-                    </Paper>
-                </Box>
-            </Grid>
-            <Grid item xs={3}>
-                <Box p={{xs:3, sm:4}}>
-                    <Button color="secondary">Delete</Button>
-                    <Button color="primary">Edit</Button>
-                </Box>
-            </Grid>
-            <Grid item xs={9}>
-                <Box p={{xs:4, sm:4}}>
-                    <Paper>
-                        <Typography>
-                            Customer Name: Random Name
-                        </Typography>
-                        <Typography>
-                            Customer Phone Number: 647-555-1111
-                        </Typography>
-                        <Typography>
-                            Service: Pedicure
-                        </Typography>
-                        <Typography>
-                            Date and Time: 2020-10-02 11:30AM
-                        </Typography>
-                    </Paper>
-                </Box>
-            </Grid>
-            <Grid item xs={3}>
-                <Box p={{xs:3, sm:4}}>
-                    <Button color="secondary">Delete</Button>
-                    <Button color="primary">Edit</Button>
-                </Box>
-            </Grid>
-            <Grid item xs={9}>
-                <Box p={{xs:4, sm:4}}>
-                    <Paper>
-                        <Typography>
-                            Customer Name: Random Name
-                        </Typography>
-                        <Typography>
-                            Customer Phone Number: 647-555-1111
-                        </Typography>
-                        <Typography>
-                            Service: Pedicure
-                        </Typography>
-                        <Typography>
-                            Date and Time: 2020-10-02 11:30AM
-                        </Typography>
-                    </Paper>
-                </Box>
-            </Grid>
-            <Grid item xs={3}>
-                <Box p={{xs:3, sm:4}}>
-                    <Button color="secondary">Delete</Button>
-                    <Button color="primary">Edit</Button>
-                </Box>
+            <Grid container spacing={1}>
+                {users.map(u => (
+                    <React.Fragment>
+                    <Grid item xs={12}>
+                        <Paper>
+                            <Grid container>
+                                    
+                                <Grid item xs={10}>
+                                    <Typography>
+                                        {u.name}
+                                    </Typography>
+
+                                    <Typography>
+                                        {u.phone}
+                                    </Typography>
+                                    
+                                    <Typography>
+                                        {u.service}
+                                    </Typography>
+                                    
+                                    <Typography>
+                                        {u.time}
+                                    </Typography>
+                                </Grid>
+
+                                <Grid item xs={2}>
+                                    <Button color="secondary" onClick={()=>{onClickCancel(u)}}>Delete</Button>
+                                    <Button color="primary">Edit</Button>
+                                </Grid>
+                            </Grid>
+                        </Paper>
+
+                    </Grid>
+                        
+                    </React.Fragment>
+                ))}
+
             </Grid>
         </Grid>
     )
