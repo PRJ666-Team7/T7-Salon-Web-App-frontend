@@ -6,6 +6,7 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import MenuIcon from '@material-ui/icons/Menu';
 import breakpointHelper from '../../helpers/breakpointHelper'
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({
     Nav: {
@@ -102,6 +103,12 @@ const useStyles = makeStyles(theme => ({
     },
     TwitterIconSize: {
         fontSize: 30
+    },
+    UserGreeting: {
+        position: 'absolute',
+        top: '80px',
+        right: '10px',
+        color: '#3b3b3b'
     }
 }));
 
@@ -110,7 +117,8 @@ export default function(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
     const currentRoute = useHistory().location.pathname.toLowerCase();
-
+    const user = Cookies.get('user') && JSON.parse(Cookies.get('user'))
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
       };
@@ -125,6 +133,12 @@ export default function(props) {
             width,
             height
         };
+    }
+
+    function signOut() {
+        Cookies.remove("jwt")
+        Cookies.remove("user")
+        window.location = "/login"
     }
 
     useEffect(() => {
@@ -162,9 +176,14 @@ export default function(props) {
                                 <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/contact">
                                     Contact Us
                                 </Button>
+                                { Cookies.get('jwt') ?
+                                <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" onClick={signOut}>
+                                    Sign Out
+                                </Button> :
                                 <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/login">
                                     Login
                                 </Button>
+                                }
                             </Grid>
                         </Grid>
                     </React.Fragment>
@@ -193,7 +212,10 @@ export default function(props) {
                                             <MenuItem onClick={() => window.location.href="/booking"}>Booking</MenuItem>
                                             <MenuItem onClick={() => window.location.href="/about"}>About</MenuItem>
                                             <MenuItem onClick={() => window.location.href="/contact"}>Contact</MenuItem>
-                                            <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
+                                            { Cookies.get('jwt') ?
+                                                <MenuItem onClick={signOut}>Sign Out</MenuItem> :
+                                                <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
+                                            }
                                         </Menu>
                                     </Grid>
                                 </Grid>
@@ -202,6 +224,8 @@ export default function(props) {
                     </AppBar>
                 )}
             </Grid>
+            
+            {user && <Typography className={classes.UserGreeting}>Hello, {user.fname}</Typography>}
 
             <Grid container className={windowDimensions.width >= 960 ? classes.Content : classes.MobileContent} justify="center" {...breakpointHelper.full} >
                 {props.children}
