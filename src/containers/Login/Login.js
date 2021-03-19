@@ -19,7 +19,7 @@ const ForgotEmail = withStyles((theme) => ({
         color: "blue",
         paddingTop: theme.spacing(2),
         paddingLeft: "100%",
-        minWidth: "100px"
+        minWidth: "130px"
     }
 }))(Typography);
 
@@ -158,7 +158,7 @@ export default function Login() {
                         <Grid>
                             <ButtonBase onClick={() => window.location.href = "/forgotPassword"}>
                                 <ForgotEmail>
-                                    Forgot email?
+                                    Forgot password
                                 </ForgotEmail>
                             </ButtonBase>
                         </Grid>
