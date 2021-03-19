@@ -13,6 +13,10 @@ const Title = withStyles((theme) => ({
     }
 }))(Typography);
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+  
 export default function ForgotPassword() {
     const [value, setValue] = React.useState({ email: '' });
     const [error, setError] = React.useState({ email: '' });
@@ -69,10 +73,7 @@ export default function ForgotPassword() {
         setOpen(false);
     };
 
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
-      
+
     return (
         <Grid container>
             <Helmet>

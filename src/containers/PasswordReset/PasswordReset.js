@@ -20,6 +20,10 @@ const TextInput = withStyles((theme) => ({
      }
  }))(TextField);
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 export default function ForgotPassword() {
     const [value, setValue] = React.useState({password: '', password2: ''});
     const [error, setError] = React.useState({password: '', password2: ''});
@@ -88,10 +92,6 @@ export default function ForgotPassword() {
             [event.target.id]: event.target.value
         });
     };
-
-    const Transition = React.forwardRef(function Transition(props, ref) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
       
     return (
         <Grid container>
