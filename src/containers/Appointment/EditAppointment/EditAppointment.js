@@ -13,10 +13,12 @@ import {
   Button,
 } from "@material-ui/core";
 import axios from "axios";
+import { Alert } from "@material-ui/lab";
 import Cookies from "js-cookie";
 
 function EditAppointment(props) {
   const { editDialog, setEditDialog } = props;
+  const [alert, setAlert] = useState(false);
   const [services, setServices] = useState([]);
   const [appointmentTime, setAppointmentTime] = useState(editDialog.time);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -75,22 +77,32 @@ function EditAppointment(props) {
   };
 
   const handleUpdate = () => {
-    const date = appointmentTime.split("T")[0];
-    const time = appointmentTime.split("T")[1];
-    const token = Cookies.get("jwt");
-    axios.post(
-      "http://localhost:8000/editApt",
-      { id: editDialog.id, date: date, time: time, services: selectedServices },
+    if (selectedServices.length == 0) {
+      setAlert(true);
+      setTimeout(() => {
+        setAlert(false);
+      }, 3000);
+    } else {
+      console.log()
+      const date = appointmentTime.split("T")[0];
+      const time = appointmentTime.split("T")[1];
+      const token = Cookies.get("jwt");
+      axios.post("http://localhost:8000/editApt", {
+        id: editDialog.id,
+        date: date,
+        time: time,
+        services: selectedServices,
+      },
       {
         headers: {
           authorization: `JWT ${token}`,
         },
-      }
-    );
-    console.log(
-      `id: ${editDialog.id}, date: ${date}, time: ${time}, services: ${selectedServices}`
-    );
-    setEditDialog({ ...editDialog, isOpen: false });
+      });
+      console.log(
+        `id: ${editDialog.id}, date: ${date}, time: ${time}, services: ${selectedServices}`
+      );
+      setEditDialog({ ...editDialog, isOpen: false });
+    }
   };
 
   const handleClose = () => {
@@ -110,6 +122,12 @@ function EditAppointment(props) {
         <DialogContentText>{editDialog.subTitle}</DialogContentText>
         <br />
         <FormLabel>Services</FormLabel>
+        {alert ? (
+          <Alert severity="error" color="info">
+            {" "}
+            At least one service is required{" "}
+          </Alert>
+        ) : null}
         <FormGroup row>
           {services.map((s) => (
             <FormControlLabel
