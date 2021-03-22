@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initValue = () => {
+    if (Cookies.get('jwt') == undefined) {
+        window.location = '/'
+    }
     const user = JSON.parse(Cookies.get('user'))
 
     return { time: '2021-02-22T09:00', name: user.fname, phone: user.phone, email: user.email }
@@ -43,8 +46,8 @@ function Appointment() {
     const [employeeList, setEmployeeList] = useState([]);
     const [service, setService] = useState([]);
     const [price, setPrice] = useState(0);
+    const [confirm, setConfirm] = useState(false);
 
-    const [user, setUser] = useState({});
 
     const classes = useStyles();
 
@@ -162,6 +165,7 @@ function Appointment() {
         
         if (!employee) {
             errors.employee = "Employee must be selected"
+            valid = false;
         } else {
             errors.employee = ""
         }
@@ -174,6 +178,7 @@ function Appointment() {
             errors.service = ""
         } else {
             errors.service = "At least one service must be selected"
+            valid = false;
         }
 
         setError(errors)
@@ -197,10 +202,8 @@ function Appointment() {
             })
                 .then(function (response) {
                     if (response.data.status == "success") {
-
-                        if (Cookies.get('jwt')) {
-                            window.location = "/"
-                        }
+                        setServerError(false)
+                        setConfirm(true)
                     } else {
                         setServerError(true)
                     }
@@ -213,6 +216,7 @@ function Appointment() {
             <Helmet>
                 <title>Booking</title>
             </Helmet>
+            {confirm && <Alert severity="success" onClose={() => setServerError(false)}>Booked appointment successfully </Alert>}
 
             <CssBaseline />
             <div className={classes.paper}>
@@ -224,6 +228,7 @@ function Appointment() {
                 </Typography>
 
                 {serverError && <Alert severity="error" onClose={() => setServerError(false)}>Invalid </Alert>}
+
 
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
