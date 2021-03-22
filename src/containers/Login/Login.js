@@ -43,6 +43,11 @@ export default function Login() {
     const [error, setError] = React.useState({email: '', password: ''});
     const [serverError, setServerError] = React.useState(false);
 
+
+    if(Cookies.get('jwt')){
+        window.location = '/';
+    }
+
     const submitHandler = async (event) => {
         const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
