@@ -80,7 +80,6 @@ export default function ForgotPassword() {
                 <title>Forgot Recovery</title>
             </Helmet>
 
-
             <Dialog TransitionComponent={Transition} onClose={handleClose} open={open}>
                 <DialogTitle id="alert-dialog-slide-title">Success</DialogTitle>
                 <DialogContent>

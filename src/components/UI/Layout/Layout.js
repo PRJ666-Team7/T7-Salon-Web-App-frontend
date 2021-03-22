@@ -167,15 +167,36 @@ export default function(props) {
                                 <Button className={currentRoute == '/' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/">
                                     Home
                                 </Button>
+
+                                {user &&
+                                    <React.Fragment>
+                                        {user.isAdmin &&
+                                            <Button className={currentRoute == '/service' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/service">
+                                                Services
+                                            </Button>
+                                        }
+
+                                        {user.isEmployee &&
+                                            <Button className={currentRoute == '/appointment' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/appointment">
+                                                Appointments
+                                            </Button>
+                                        }
+
+                                    </React.Fragment> 
+                                }
+
                                 <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/booking">
                                     Book Appointment
                                 </Button>
+
                                 <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/about">
                                     About Us
                                 </Button>
                                 <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/contact">
                                     Contact Us
                                 </Button>
+
+
                                 { Cookies.get('jwt') ?
                                 <Button className={currentRoute == '/login' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" onClick={signOut}>
                                     Sign Out
