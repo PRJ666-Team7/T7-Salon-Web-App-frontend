@@ -54,9 +54,10 @@ function Scheduling() {
     const classes = useStyles();
 
     useEffect(() => {
-        if (Cookies.get('jwt') == undefined) {
+        const user = Cookies.get('user') ? JSON.parse(Cookies.get('user')) : ""
+        if (Cookies.get('jwt') == undefined || !user.isAdmin) {
             window.location = '/'
-        }
+        } 
 
         const token = Cookies.get('jwt')
         axois.get('/getEmp', {

@@ -168,12 +168,31 @@ export default function(props) {
                                     Home
                                 </Button>
 
-                                {user &&
+                                {!user || (!user.isAdmin && !user.isEmployee)  ?
+                                    <React.Fragment>
+                                        <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/booking">
+                                            Book Appointment
+                                        </Button>
+                                        <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/about">
+                                            About Us
+                                        </Button>
+                                        <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/contact">
+                                            Contact Us
+                                        </Button>
+                                    </React.Fragment> :
                                     <React.Fragment>
                                         {user.isAdmin &&
-                                            <Button className={currentRoute == '/service' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/service">
-                                                Services
-                                            </Button>
+                                            <React.Fragment>
+                                                <Button className={currentRoute == '/service' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/service">
+                                                    Services
+                                                </Button>
+                                                <Button className={currentRoute == '/scheduling' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/scheduling">
+                                                    Schedule
+                                                </Button>
+                                                <Button className={currentRoute == '/scheduling' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/scheduling">
+                                                    Role Management
+                                                </Button>
+                                            </React.Fragment>
                                         }
 
                                         {user.isEmployee &&
@@ -182,19 +201,8 @@ export default function(props) {
                                             </Button>
                                         }
 
-                                    </React.Fragment> 
+                                    </React.Fragment>
                                 }
-
-                                <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/booking">
-                                    Book Appointment
-                                </Button>
-
-                                <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/about">
-                                    About Us
-                                </Button>
-                                <Button className={currentRoute == '/contact' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained"  href="/contact">
-                                    Contact Us
-                                </Button>
 
 
                                 { Cookies.get('jwt') ?
