@@ -35,15 +35,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const initValue = () => {
-    if (Cookies.get('jwt') == undefined) {
-        window.location = '/'
-    }
-    const user = JSON.parse(Cookies.get('user'))
-
-    return { time: '2021-02-22T09:00', name: user.fname, phone: user.phone, email: user.email }
-}
-
 function Scheduling() {
     const [value, setValue] = React.useState({ employee: '', date: [], startTime: '09:00',  endTime: '17:00' });
     const [error, setError] = React.useState({ employee: '', date: '', startTime: '',  endTime: '' });

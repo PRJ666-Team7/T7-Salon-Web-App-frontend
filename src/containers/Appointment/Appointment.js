@@ -18,7 +18,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Appointment() {
-  //const [appointment, setAppointment] = useState([{name: "Wei", phone: "6475556661", service: "Pedicure", time: "2020-10-02 11:30AM"}, {name: "Wei", phone: "6475556662", service: "Acrylic", time: "2020-10-02 11:30AM"}, {name: "Jason", phone: "6475556663", service: "Shellac Manicure", time: "2020-10-02 11:30AM"}, {name: "YF", phone: "6475556664", service: "Manicure", time: "2020-10-02 11:30AM"}])
   const [appointment, setAppointment] = useState([]);
   const [editDialog, setEditDialog] = useState({
     isOpen: false,
@@ -28,25 +27,26 @@ function Appointment() {
     time: null,
   });
 
+  async function getData() {
+    const token = Cookies.get("jwt");
+    var data = await axios({
+      method: "GET",
+      url: "http://localhost:8000/getApt",
+      setTimeout: 5000,
+      headers: {
+        authorization: `JWT ${token}`,
+      },
+    });
+
+    setAppointment(data.data);
+  }
+
   const classes = useStyles();
 
   useEffect(() => {
     if (Cookies.get("user")) {
       const user = JSON.parse(Cookies.get("user"));
       if (user !== undefined && user.isEmployee) {
-        async function getData() {
-          const token = Cookies.get("jwt");
-          var data = await axios({
-            method: "GET",
-            url: "http://localhost:8000/getApt",
-            setTimeout: 5000,
-            headers: {
-              authorization: `JWT ${token}`,
-            },
-          });
-
-          setAppointment(data.data);
-        }
         getData();
       } else {
         window.location = "/";
@@ -54,7 +54,7 @@ function Appointment() {
     } else {
       window.location = "/";
     }
-  }, [appointment]);
+  }, [editDialog]);
 
   function onClickDelete(app) {
     let result = window.confirm(
@@ -70,10 +70,7 @@ function Appointment() {
             authorization: `JWT ${token}`,
           },
         }
-      );
-      let newArr = appointment.filter((a) => a !== app);
-      console.log(newArr);
-      setAppointment([...newArr]);
+      ).then(getData());
     }
   }
 
