@@ -45,24 +45,25 @@ function Service() {
     price: 0,
   });
 
+  async function getData() {
+    const token = Cookies.get("jwt");
+    var data = await axios({
+      method: "GET",
+      url: "http://localhost:8000/getSrv",
+      setTimeout: 5000,
+      headers: {
+        authorization: `JWT ${token}`,
+      },
+    });
+
+    setServices(data.data);
+  }
+
   const classes = useStyles();
   useEffect(() => {
     if (Cookies.get("user")) {
       const user = JSON.parse(Cookies.get("user"));
       if (user !== undefined && user.isAdmin) {
-        async function getData() {
-          const token = Cookies.get("jwt");
-          var data = await axios({
-            method: "GET",
-            url: "http://localhost:8000/getSrv",
-            setTimeout: 5000,
-            headers: {
-              authorization: `JWT ${token}`,
-            },
-          });
-
-          setServices(data.data);
-        }
         getData();
       } else {
         window.location = "/";
@@ -70,7 +71,7 @@ function Service() {
     } else {
       window.location = "/";
     }
-  }, [services]);
+  }, [editDialog]);
 
   const handleChangeSrvName = (e) => {
     if (e.target.value !== "") {
@@ -118,7 +119,7 @@ function Service() {
             authorization: `JWT ${token}`,
           },
         }
-      );
+      ).then(getData());
     }
   };
 
@@ -137,7 +138,7 @@ function Service() {
             authorization: `JWT ${token}`,
           },
         }
-      );
+      ).then(getData());
     }
   };
 
