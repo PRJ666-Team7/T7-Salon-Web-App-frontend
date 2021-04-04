@@ -18,7 +18,7 @@ function EditService(props){
 
     const handleUpdate = ()=>{
 
-        const data = {id: editDialog.id, name: name, price: price}
+        const data = {id: editDialog.id, name: name.toUpperCase(), price: price}
         console.log(data)
         const token = Cookies.get("jwt");
         axios.post('http://localhost:8000/editSrv', 

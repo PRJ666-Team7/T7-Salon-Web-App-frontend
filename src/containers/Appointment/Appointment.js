@@ -18,8 +18,21 @@ const useStyles = makeStyles(() => ({
 }));
 
 function Appointment() {
-  //const [appointment, setAppointment] = useState([{name: "Wei", phone: "6475556661", service: "Pedicure", time: "2020-10-02 11:30AM"}, {name: "Wei", phone: "6475556662", service: "Acrylic", time: "2020-10-02 11:30AM"}, {name: "Jason", phone: "6475556663", service: "Shellac Manicure", time: "2020-10-02 11:30AM"}, {name: "YF", phone: "6475556664", service: "Manicure", time: "2020-10-02 11:30AM"}])
-  const [appointment, setAppointment] = useState([]);
+  const [appointment, setAppointment] = useState([
+    {
+      name: "Wei",
+      phone: "6475556661",
+      service: ["Pedicure", "Wax"],
+      time: "2020-10-02 11:30AM",
+    },
+    {
+      name: "Wei",
+      phone: "6475556662",
+      service: ["Acrylic"],
+      time: "2020-10-02 11:30AM",
+    },
+  ]);
+  //const [appointment, setAppointment] = useState([]);
   const [editDialog, setEditDialog] = useState({
     isOpen: false,
     title: "",
@@ -90,13 +103,13 @@ function Appointment() {
               <Paper>
                 <Grid container>
                   <Grid item xs={10}>
-                    <Typography>{a.name}</Typography>
+                    <Typography><b>Customer Name: </b>{a.name}</Typography>
 
-                    <Typography>{a.phone}</Typography>
+                    <Typography><b>Phone Number: </b>{a.phone}</Typography>
 
-                    <Typography>{a.service.join(", ")}</Typography>
+                    <Typography><b>Services: </b>{a.service.join(", ")}</Typography>
 
-                    <Typography>{a.time}</Typography>
+                    <Typography><b>Appointment Time: </b>{a.time}</Typography>
                   </Grid>
 
                   <Grid item xs={2}>
