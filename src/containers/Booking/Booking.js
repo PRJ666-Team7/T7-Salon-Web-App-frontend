@@ -52,7 +52,6 @@ function Appointment() {
     const classes = useStyles();
 
     const handleChangeService = (event) => {
-
         setService({ ...service, [event.target.name]: { ...service[event.target.name], checked: event.target.checked} });
     };
 
@@ -216,7 +215,7 @@ function Appointment() {
             <Helmet>
                 <title>Booking</title>
             </Helmet>
-            {confirm && <Alert severity="success" onClose={() => setServerError(false)}>Booked appointment successfully </Alert>}
+            {confirm && <Alert severity="success" onClose={() => setConfirm(false)}>Booked appointment successfully </Alert>}
 
             <CssBaseline />
             <div className={classes.paper}>
