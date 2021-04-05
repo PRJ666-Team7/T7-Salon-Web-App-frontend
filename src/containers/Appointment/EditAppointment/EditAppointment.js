@@ -12,9 +12,6 @@ import {
   FormControlLabel,
   TextField,
   Button,
-  FormControl,
-  InputLabel,
-  Select,
   MenuItem
 } from "@material-ui/core";
 import axios from "axios";
@@ -61,6 +58,8 @@ function EditAppointment(props) {
       setEmpSchedule(empScheduleRequest.data);
 
       let date = new Set();
+      date.add(editDialog.date);
+      
       for(let i = 0; i < empScheduleRequest.data.length; i++){
         date.add(empScheduleRequest.data[i].date)
       }
@@ -126,12 +125,14 @@ function EditAppointment(props) {
     setDate(e.target.value.split('T')[0]);
     console.log(date)
     let time = [];
-    empSchedule.map(es=> {
+    if(e.target.value == editDialog.date)
+      time.push({aptId: editDialog.id, aptTime: editDialog.time_start + ' to ' + editDialog.time_end})
+    else{empSchedule.map(es=> {
       if(es.date == e.target.value){
         time.push({aptId: es.id, aptTime: es.time_start + ' to ' + es.time_end});
       }
       console.log(time);
-    })
+    })}
     setTimeList(time);
   }
 
