@@ -59,6 +59,7 @@ export class Routes extends Component {
                 </Route>
                 <Route path='/role'>
                     <UserRole />
+                </Route>
                 <Route path='/employeeSchedule'>
                     <EmployeeSchedule />
                 </Route>
