@@ -10,6 +10,8 @@ import SignUp from './containers/SignUp/SignUp'
 import Appointment from './containers/Appointment/Appointment'
 import Service from './containers/Service/Service'
 import Scheduling from './containers/Scheduling/Scheduling'
+import UserAppointment from './containers/UserAppointment/UserAppointment'
+import UserRole from './containers/UserRole/UserRole'
 import EmployeeSchedule from './containers/EmployeeSchedule/EmployeeSchedule'
 
 import {
@@ -52,6 +54,11 @@ export class Routes extends Component {
                 <Route path='/scheduling'>
                     <Scheduling />
                 </Route>
+                <Route path='/userappointment'>
+                    <UserAppointment />
+                </Route>
+                <Route path='/role'>
+                    <UserRole />
                 <Route path='/employeeSchedule'>
                     <EmployeeSchedule />
                 </Route>

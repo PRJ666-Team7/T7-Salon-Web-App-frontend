@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
   Button: {
     zIndex: 2,
   },
+  Paper: {
+    background: "#dae8fc"
+  },
 }));
 
 function Appointment() {
@@ -36,9 +39,23 @@ function Appointment() {
       headers: {
         authorization: `JWT ${token}`,
       },
-    });
-
-    setAppointment(data.data);
+    })
+    .then(data => {
+      const appointments = data.data.map(a =>{
+        return {
+          id: a.id,
+          name: a.name,
+          phone: a.phone,
+          service: a.service,
+          date: a.date.split('T')[0],
+          time_start: a.time_start,
+          time_end: a.time_end,
+          usr_id: a.usr_id
+        }
+      })
+      setAppointment(appointments);
+      console.log(appointments)
+    })
   }
 
   const classes = useStyles();
@@ -79,61 +96,74 @@ function Appointment() {
       <Helmet>
         <title>Appointment</title>
       </Helmet>
+      {appointment.length > 0? (
+        <Grid container spacing={1}>
+          {appointment.map((a) => (
+            <React.Fragment>
+              <Grid item xs={12}>
+                <Paper>
+                  <Grid container>
+                    <Grid item xs={10}>
+                      <Typography>Customer Name: {a.name}</Typography>
 
-      <Grid container spacing={1}>
-        {appointment.map((a) => (
-          <React.Fragment>
-            <Grid item xs={12}>
-              <Paper>
-                <Grid container>
-                  <Grid item xs={10}>
-                    <Typography>{a.name}</Typography>
+                      <Typography>Customer Phone: {a.phone}</Typography>
 
-                    <Typography>{a.phone}</Typography>
+                      <Typography>Services: {a.service.join(", ")}</Typography>
 
-                    <Typography>{a.service.join(", ")}</Typography>
+                      <Typography>Date: {a.date}</Typography>
 
-                    <Typography>{a.time}</Typography>
+                      <Typography>From: {a.time_start} to {a.time_end}</Typography>
+                    </Grid>
+
+                    <Grid item xs={2}>
+                      <Button
+                        color="secondary"
+                        onClick={() => {
+                          onClickDelete(a);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        color="primary"
+                        onClick={() => {
+                          setEditDialog({
+                            isOpen: true,
+                            title: "Edit Appointment",
+                            subTitle: `Edit ${a.name}'s appointment, phone number: ${a.phone}`,
+                            service: a.service,
+                            id: a.id,
+                            usr_id: a.usr_id
+                          });
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </Grid>
                   </Grid>
+                </Paper>
 
-                  <Grid item xs={2}>
-                    <Button
-                      color="secondary"
-                      onClick={() => {
-                        onClickDelete(a);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        setEditDialog({
-                          isOpen: true,
-                          title: "Edit Appointment",
-                          subTitle: `Edit ${a.name}'s appointment, phone number: ${a.phone}`,
-                          service: a.service,
-                          time: a.time.replace(" ", "T"),
-                          id: a.id,
-                        });
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-
-              {editDialog.isOpen ? (
-                <EditAppointment
-                  editDialog={editDialog}
-                  setEditDialog={setEditDialog}
-                />
-              ) : null}
-            </Grid>
-          </React.Fragment>
-        ))}
-      </Grid>
+                {editDialog.isOpen ? (
+                  <EditAppointment
+                    editDialog={editDialog}
+                    setEditDialog={setEditDialog}
+                  />
+                ) : null}
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>)
+        :
+        <Grid container justify="center">
+          <Grid item>
+            <Paper className={classes.Paper}>
+              <Typography>
+                No Upcoming Appointments
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      }
     </Grid>
   );
 }
