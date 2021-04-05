@@ -120,7 +120,7 @@ function Service() {
             authorization: `JWT ${token}`,
           },
         }
-      ).then(getData());
+      ).then(() => getData());
     }
   };
 
@@ -139,7 +139,7 @@ function Service() {
             authorization: `JWT ${token}`,
           },
         }
-      ).then(getData());
+      ).then(() => getData());
     }
   };
 
