@@ -281,10 +281,10 @@ function Scheduling() {
                 <title>Scheduling</title>
             </Helmet>
             {confirm.confirm && <Alert severity="success" onClose={() => setConfirm({confirm: false, message: ""})}> {confirm.message}</Alert>}
-            {serverWarn && <Alert style={{position: "absolute", top: "30%", left: "41%", zIndex: "1500"}} severity="warning" onClose={() => setServerWarn(false)}>Warning: The following appointment could not be <br/> remove as users have booked them 
+            {serverWarn && <Alert severity="warning" onClose={() => setServerWarn(false)}>Warning: The following appointment could not be remove as users have booked them 
                 {remainingDates.map(d => 
                 <Typography>
-                    Date: {d.date} at {d.startTime} - {d.endTime}
+                    Date: {d.date} at {d.startTime}-{d.endTime}
                 </Typography>    
                 )}
             </Alert>}
