@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
     zIndex: 2,
   },
   Paper: {
-    background: "#dae8fc",
+    background: "#dae8fc"
   },
 }));
 
@@ -39,21 +39,23 @@ function Appointment() {
       headers: {
         authorization: `JWT ${token}`,
       },
-    });
-    const appointments = data.data.map((a) => {
-      return {
-        id: a.id,
-        name: a.name,
-        phone: a.phone,
-        service: a.service,
-        date: a.date.split("T")[0],
-        time_start: a.time_start,
-        time_end: a.time_end,
-        usr_id: a.usr_id,
-      };
-    });
-    setAppointment(appointments);
-    //console.log(appointments)
+    })
+    .then(data => {
+      const appointments = data.data.map(a =>{
+        return {
+          id: a.id,
+          name: a.name,
+          phone: a.phone,
+          service: a.service,
+          date: a.date.split('T')[0],
+          time_start: a.time_start,
+          time_end: a.time_end,
+          usr_id: a.usr_id
+        }
+      })
+      setAppointment(appointments);
+      console.log(appointments)
+    })
   }
 
   const classes = useStyles();
@@ -77,17 +79,15 @@ function Appointment() {
     );
     if (result) {
       const token = Cookies.get("jwt");
-      axios
-        .post(
-          "http://localhost:8000/removeApt",
-          { id: app.id },
-          {
-            headers: {
-              authorization: `JWT ${token}`,
-            },
-          }
-        )
-        .then(() => getData());
+      axios.post(
+        "http://localhost:8000/removeApt",
+        { id: app.id },
+        {
+          headers: {
+            authorization: `JWT ${token}`,
+          },
+        }
+      ).then(()=>getData());
     }
   }
 
@@ -96,7 +96,7 @@ function Appointment() {
       <Helmet>
         <title>Appointment</title>
       </Helmet>
-      {appointment.length > 0 ? (
+      {appointment.length > 0? (
         <Grid container spacing={1}>
           {appointment.map((a) => (
             <React.Fragment>
@@ -104,17 +104,15 @@ function Appointment() {
                 <Paper>
                   <Grid container>
                     <Grid item xs={10}>
-                      <Typography><b>Customer Name: </b>{a.name}</Typography>
+                      <Typography>Customer Name: {a.name}</Typography>
 
-                      <Typography><b>Customer Phone: </b>{a.phone}</Typography>
+                      <Typography>Customer Phone: {a.phone}</Typography>
 
-                      <Typography><b>Services: </b>{a.service.join(", ")}</Typography>
+                      <Typography>Services: {a.service.join(", ")}</Typography>
 
-                      <Typography><b>Date: </b>{a.date}</Typography>
+                      <Typography>Date: {a.date}</Typography>
 
-                      <Typography>
-                        <b>From: </b>{a.time_start} <b>to</b> {a.time_end}
-                      </Typography>
+                      <Typography>From: {a.time_start} to {a.time_end}</Typography>
                     </Grid>
 
                     <Grid item xs={2}>
@@ -136,6 +134,9 @@ function Appointment() {
                             service: a.service,
                             id: a.id,
                             usr_id: a.usr_id,
+                            date: a.date,
+                            time_start: a.time_start,
+                            time_end: a.time_end
                           });
                         }}
                       >
@@ -154,16 +155,18 @@ function Appointment() {
               </Grid>
             </React.Fragment>
           ))}
-        </Grid>
-      ) : (
+        </Grid>)
+        :
         <Grid container justify="center">
           <Grid item>
             <Paper className={classes.Paper}>
-              <Typography>No Upcoming Appointments</Typography>
+              <Typography>
+                No Upcoming Appointments
+              </Typography>
             </Paper>
           </Grid>
         </Grid>
-      )}
+      }
     </Grid>
   );
 }
