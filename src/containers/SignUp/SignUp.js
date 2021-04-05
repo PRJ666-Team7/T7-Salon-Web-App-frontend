@@ -31,7 +31,7 @@ import { Alert } from '@material-ui/lab';
 export default function SignUp() {
     const [value, setValue] = React.useState({email: '', fname: '', lname: '', phone: '', password: '', password2: ''});
     const [error, setError] = React.useState({email: '', fname: '', lname: '', phone: '', password: '', password2: ''});
-    const [serverError, setServerError] = React.useState(false);
+    const [serverError, setServerError] = React.useState({error: false, message: ""});
 
     useEffect(() => {
         if (Cookies.get('jwt')){
@@ -140,7 +140,7 @@ export default function SignUp() {
                             window.location = "/"
                         }
                     } else {
-                        setServerError(true)
+                        setServerError({error: true, message: response.data.message != "" ? response.data.message : ""})
                     }
                 })
         }
@@ -173,7 +173,13 @@ export default function SignUp() {
                         </Typography>
                     </Grid>
 
-                    {serverError && <Alert severity="error" onClose={() => setServerError(false)}>Invalid </Alert>}
+                    {serverError.error && 
+                    <Alert 
+                        severity="error" 
+                        onClose={() => setServerError({error: false, message: ""})}
+                        > 
+                            {serverError.message != "" ? serverError.message :  "Invalid"} 
+                    </Alert>}
 
                     <Grid container justify="center" {...breakpointHelper.full} style={{ paddingTop: "20px" }}>
                         <TextInput

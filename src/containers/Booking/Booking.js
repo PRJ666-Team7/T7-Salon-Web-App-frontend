@@ -44,8 +44,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const initValue = () => {
+
   if (Cookies.get("jwt") == undefined) {
-    window.location = "/";
+    window.location = "/login";
   }
   const user = JSON.parse(Cookies.get("user"));
 

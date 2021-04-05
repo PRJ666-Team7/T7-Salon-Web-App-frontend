@@ -12,6 +12,7 @@ import Service from './containers/Service/Service'
 import Scheduling from './containers/Scheduling/Scheduling'
 import UserAppointment from './containers/UserAppointment/UserAppointment'
 import UserRole from './containers/UserRole/UserRole'
+import EmployeeSchedule from './containers/EmployeeSchedule/EmployeeSchedule'
 
 import {
     BrowserRouter as Router,
@@ -58,6 +59,8 @@ export class Routes extends Component {
                 </Route>
                 <Route path='/role'>
                     <UserRole />
+                <Route path='/employeeSchedule'>
+                    <EmployeeSchedule />
                 </Route>
                 <Route path="/">
                     <Home />
