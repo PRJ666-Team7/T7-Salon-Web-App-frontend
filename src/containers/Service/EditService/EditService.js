@@ -9,6 +9,7 @@ import {    Dialog,
 } from '@material-ui/core';
 import axios from 'axios';
 import Cookies from "js-cookie";
+import Config from '../../../components/helpers/Config'
 
 function EditService(props){
     const { editDialog, setEditDialog } = props;
@@ -21,7 +22,7 @@ function EditService(props){
         const data = {id: editDialog.id, name: name.toUpperCase(), price: price}
         console.log(data)
         const token = Cookies.get("jwt");
-        axios.post('http://localhost:8000/editSrv', 
+        axios.post(Config.api + '/editSrv', 
         data,
         {headers: {
             authorization: `JWT ${token}`,

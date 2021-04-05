@@ -153,7 +153,7 @@ export default function(props) {
     return (
         <Grid container style={{minHeight: '100vh'}} direction="column" >
             <Grid container className={classes.HeaderColor} container justify="flex-start" alignItems="center" {...breakpointHelper.full}>
-                {windowDimensions.width >= 1330 ? (
+                {windowDimensions.width >= 1550 ? (
                     <React.Fragment>
                         <Grid {...breakpointHelper.third}>
                             <ButtonBase onClick={() => window.location.href="/"}>
@@ -173,6 +173,11 @@ export default function(props) {
                                         <Button className={currentRoute == '/booking' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/booking">
                                             Book Appointment
                                         </Button>
+                                        {user &&
+                                            <Button className={currentRoute == '/userappointment' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/userappointment">
+                                                My Appointment
+                                            </Button>
+                                        }
                                         <Button className={currentRoute == '/about' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/about">
                                             About Us
                                         </Button>
@@ -189,7 +194,7 @@ export default function(props) {
                                                 <Button className={currentRoute == '/scheduling' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/scheduling">
                                                     Schedule
                                                 </Button>
-                                                <Button className={currentRoute == '/scheduling' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/scheduling">
+                                                <Button className={currentRoute == '/role' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/role">
                                                     Role Management
                                                 </Button>
                                             </React.Fragment>
@@ -244,9 +249,27 @@ export default function(props) {
                                             open={Boolean(anchorEl)}
                                             onClose={handleClose}
                                             >
-                                            <MenuItem onClick={() => window.location.href="/booking"}>Booking</MenuItem>
-                                            <MenuItem onClick={() => window.location.href="/about"}>About</MenuItem>
-                                            <MenuItem onClick={() => window.location.href="/contact"}>Contact</MenuItem>
+                                            {!user || (!user.isAdmin && !user.isEmployee)  ?
+                                                <React.Fragment>
+                                                    <MenuItem onClick={() => window.location.href="/booking"}>Booking</MenuItem>
+                                                    {user && <MenuItem onClick={() => window.location.href="/userappointment"}>My Appointment</MenuItem>}
+                                                    <MenuItem onClick={() => window.location.href="/about"}>About Us</MenuItem>
+                                                    <MenuItem onClick={() => window.location.href="/contact"}>Contact</MenuItem>
+                                                </React.Fragment> :
+                                                <React.Fragment>
+                                                    {user.isAdmin &&
+                                                        <React.Fragment>
+                                                            <MenuItem onClick={() => window.location.href="/service"}>Services</MenuItem>
+                                                            <MenuItem onClick={() => window.location.href="/scheduling"}>Schedule</MenuItem>
+                                                            <MenuItem onClick={() => window.location.href="/role"}>Role Management</MenuItem>
+                                                        </React.Fragment>}
+                                                    {user.isEmployee &&
+                                                        <React.Fragment>
+                                                            <MenuItem onClick={() => window.location.href="/appointment"}>Appointments</MenuItem>
+                                                            <MenuItem onClick={() => window.location.href="/employeeschedule"}>My Schedule</MenuItem>
+                                                        </React.Fragment>}
+                                                </React.Fragment>
+                                            }
                                             { Cookies.get('jwt') ?
                                                 <MenuItem onClick={signOut}>Sign Out</MenuItem> :
                                                 <MenuItem onClick={() => window.location.href="/login"}>Login</MenuItem>
