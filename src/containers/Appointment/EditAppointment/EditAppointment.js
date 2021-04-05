@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
 import Cookies from "js-cookie";
+import Config from '../../../components/helpers/Config'
 
 function EditAppointment(props) {
   const { editDialog, setEditDialog } = props;
@@ -41,7 +42,7 @@ function EditAppointment(props) {
       const token = Cookies.get("jwt");
       var data = await axios({
         method: "GET",
-        url: "http://localhost:8000/getSrv",
+        url: Config.api + "/getSrv",
         setTimeout: 5000,
         headers: {
           authorization: `JWT ${token}`,
@@ -51,7 +52,7 @@ function EditAppointment(props) {
 
       var empScheduleRequest = await axios({
         method: "GET",
-        url: "http://localhost:8000/getEmpTime",
+        url: Config.api + "/getEmpTime",
         setTimeout: 5000,
         headers: {
           authorization: `JWT ${token}`,
@@ -111,7 +112,7 @@ function EditAppointment(props) {
       }, 3000);
     } else {
       const token = Cookies.get("jwt");
-      await axios.post("http://localhost:8000/editApt", {curId: editDialog.id, id: newAptId, userId: editDialog.usr_id, srvId: selectedServices},
+      await axios.post(Config.api + "/editApt", {curId: editDialog.id, id: newAptId, userId: editDialog.usr_id, srvId: selectedServices},
       {
         headers: {
           authorization: `JWT ${token}`,

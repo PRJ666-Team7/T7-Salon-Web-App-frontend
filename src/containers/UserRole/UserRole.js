@@ -11,6 +11,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Config from '../../components/helpers/Config'
 
 const useStyles = makeStyles(() => ({
   mainGrid: {
@@ -49,7 +50,7 @@ function UserRole() {
       const token = Cookies.get("jwt");
       var data = await axios({
         method: "GET",
-        url: "http://localhost:8000/getUsrInfo?term=" + email,
+        url: Config.api + "/getUsrInfo?term=" + email,
         setTimeout: 5000,
         headers: {
           authorization: `JWT ${token}`,
@@ -66,7 +67,7 @@ function UserRole() {
   const handleClickAdmin = (userId) => {
     const token = Cookies.get("jwt");
     axios.post(
-      "http://localhost:8000/setAdmin",
+      Config.api + "/setAdmin",
       { id: userId },
       {
         headers: {
@@ -86,7 +87,7 @@ function UserRole() {
     const token = Cookies.get("jwt");
     const empIdRequest = await axios({
       method: "GET",
-      url: "http://localhost:8000/getEmpId?id=" + userId,
+      url: Config.api + "/getEmpId?id=" + userId,
       setTimeout: 5000,
       headers: {
         authorization: `JWT ${token}`,
@@ -100,7 +101,7 @@ function UserRole() {
     if (empId) {
       var appointmentsRequest = await axios({
         method: "GET",
-        url: "http://localhost:8000/getEmpApt?id=" + empId,
+        url: Config.api + "/getEmpApt?id=" + empId,
         setTimeout: 5000,
         headers: {
           authorization: `JWT ${token}`,
@@ -118,7 +119,7 @@ function UserRole() {
         );
         if (confirmation) {
           axios.post(
-            "http://localhost:8000/setEmployee",
+            Config.api + "/setEmployee",
             { id: userId, employee: false },
             {
               headers: {
@@ -134,7 +135,7 @@ function UserRole() {
       }
     } else {
       axios.post(
-        "http://localhost:8000/setEmployee",
+        Config.api + "/setEmployee",
         { id: userId, employee: true },
         {
           headers: {

@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import EditAppointment from "./EditAppointment/EditAppointment";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Config from '../../components/helpers/Config'
 
 const useStyles = makeStyles(() => ({
   mainGrid: {
@@ -34,7 +35,7 @@ function Appointment() {
     const token = Cookies.get("jwt");
     var data = await axios({
       method: "GET",
-      url: "http://localhost:8000/getApt",
+      url: Config.api + "/getApt",
       setTimeout: 5000,
       headers: {
         authorization: `JWT ${token}`,
@@ -80,7 +81,7 @@ function Appointment() {
     if (result) {
       const token = Cookies.get("jwt");
       axios.post(
-        "http://localhost:8000/removeApt",
+        Config.api + "/removeApt",
         { id: app.id },
         {
           headers: {

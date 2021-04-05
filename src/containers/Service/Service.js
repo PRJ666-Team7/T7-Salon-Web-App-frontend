@@ -12,6 +12,7 @@ import { Helmet } from "react-helmet";
 import axios from "axios";
 import EditService from "./EditService/EditService";
 import Cookies from "js-cookie";
+import Config from '../../components/helpers/Config'
 
 const useStyles = makeStyles(() => ({
   mainGrid: {
@@ -49,7 +50,7 @@ function Service() {
     const token = Cookies.get("jwt");
     var data = await axios({
       method: "GET",
-      url: "http://localhost:8000/getSrv",
+      url: Config.api + "/getSrv",
       setTimeout: 5000,
       headers: {
         authorization: `JWT ${token}`,
@@ -112,7 +113,7 @@ function Service() {
       console.log(newService);
       const token = Cookies.get("jwt");
       axios.post(
-        "http://localhost:8000/addSrv",
+        Config.api + "/addSrv",
         { name: newService.sName.toUpperCase(), price: newService.sPrice },
         {
           headers: {
@@ -131,7 +132,7 @@ function Service() {
     if (result) {
       const token = Cookies.get("jwt");
       axios.post(
-        "http://localhost:8000/removeSrv",
+        Config.api + "/removeSrv",
         { id: s.srv_id },
         {
           headers: {
