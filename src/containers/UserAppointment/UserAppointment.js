@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import ChangeAppointment from "./ChangeAppointment/ChangeAppointment";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Config from '../../components/helpers/Config'
 
 const useStyles = makeStyles(() => ({
   mainGrid: {
@@ -51,7 +52,7 @@ function UserAppointment() {
           const token = Cookies.get("jwt");
           var data = await axios({
             method: "GET",
-            url: "http://localhost:8000/getUsrApt",
+            url: Config.api + "/getUsrApt",
             setTimeout: 5000,
             headers: {
               authorization: `JWT ${token}`,
