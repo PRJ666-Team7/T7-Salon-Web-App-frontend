@@ -196,9 +196,15 @@ export default function(props) {
                                         }
 
                                         {user.isEmployee &&
-                                            <Button className={currentRoute == '/appointment' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/appointment">
-                                                Appointments
-                                            </Button>
+                                            <React.Fragment>
+                                                <Button className={currentRoute == '/appointment' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/appointment">
+                                                    Appointments
+                                                </Button>
+                                                <Button className={currentRoute == '/employeeschedule' ? `${classes.NavButton} ${classes.NavButtonActive}` : classes.NavButton} variant="contained" href="/employeeschedule">
+                                                    My Schedule
+                                                </Button>
+                                            </React.Fragment>
+
                                         }
 
                                     </React.Fragment>
