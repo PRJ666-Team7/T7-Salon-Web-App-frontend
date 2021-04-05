@@ -9,9 +9,9 @@ import PasswordReset from './containers/PasswordReset/PasswordReset'
 import SignUp from './containers/SignUp/SignUp'
 import Appointment from './containers/Appointment/Appointment'
 import Service from './containers/Service/Service'
-
-
+import Scheduling from './containers/Scheduling/Scheduling'
 import UserAppointment from './containers/UserAppointment/UserAppointment'
+import UserRole from './containers/UserRole/UserRole'
 
 import {
     BrowserRouter as Router,
@@ -50,13 +50,14 @@ export class Routes extends Component {
                 <Route path='/service'>
                     <Service />
                 </Route>
-<<<<<<< HEAD
-                <Route path='/userappointment'>
-                    <UserAppointment />
-=======
                 <Route path='/scheduling'>
                     <Scheduling />
->>>>>>> 0a519b0959c8ddf06929bf2f3467c7493b33840f
+                </Route>
+                <Route path='/userappointment'>
+                    <UserAppointment />
+                </Route>
+                <Route path='/role'>
+                    <UserRole />
                 </Route>
                 <Route path="/">
                     <Home />

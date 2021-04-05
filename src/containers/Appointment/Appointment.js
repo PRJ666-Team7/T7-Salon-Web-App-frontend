@@ -15,24 +15,13 @@ const useStyles = makeStyles(() => ({
   Button: {
     zIndex: 2,
   },
+  Paper: {
+    background: "#dae8fc"
+  },
 }));
 
 function Appointment() {
-  const [appointment, setAppointment] = useState([
-    {
-      name: "Wei",
-      phone: "6475556661",
-      service: ["Pedicure", "Wax"],
-      time: "2020-10-02 11:30AM",
-    },
-    {
-      name: "Wei",
-      phone: "6475556662",
-      service: ["Acrylic"],
-      time: "2020-10-02 11:30AM",
-    },
-  ]);
-  //const [appointment, setAppointment] = useState([]);
+  const [appointment, setAppointment] = useState([]);
   const [editDialog, setEditDialog] = useState({
     isOpen: false,
     title: "",
@@ -41,25 +30,40 @@ function Appointment() {
     time: null,
   });
 
+  async function getData() {
+    const token = Cookies.get("jwt");
+    var data = await axios({
+      method: "GET",
+      url: "http://localhost:8000/getApt",
+      setTimeout: 5000,
+      headers: {
+        authorization: `JWT ${token}`,
+      },
+    })
+    .then(data => {
+      const appointments = data.data.map(a =>{
+        return {
+          id: a.id,
+          name: a.name,
+          phone: a.phone,
+          service: a.service,
+          date: a.date.split('T')[0],
+          time_start: a.time_start,
+          time_end: a.time_end,
+          usr_id: a.usr_id
+        }
+      })
+      setAppointment(appointments);
+      console.log(appointments)
+    })
+  }
+
   const classes = useStyles();
 
   useEffect(() => {
     if (Cookies.get("user")) {
       const user = JSON.parse(Cookies.get("user"));
       if (user !== undefined && user.isEmployee) {
-        async function getData() {
-          const token = Cookies.get("jwt");
-          var data = await axios({
-            method: "GET",
-            url: "http://localhost:8000/getApt",
-            setTimeout: 5000,
-            headers: {
-              authorization: `JWT ${token}`,
-            },
-          });
-
-          setAppointment(data.data);
-        }
         getData();
       } else {
         window.location = "/";
@@ -67,7 +71,7 @@ function Appointment() {
     } else {
       window.location = "/";
     }
-  }, [appointment]);
+  }, [editDialog]);
 
   function onClickDelete(app) {
     let result = window.confirm(
@@ -83,10 +87,7 @@ function Appointment() {
             authorization: `JWT ${token}`,
           },
         }
-      );
-      let newArr = appointment.filter((a) => a !== app);
-      console.log(newArr);
-      setAppointment([...newArr]);
+      ).then(getData());
     }
   }
 
@@ -95,61 +96,74 @@ function Appointment() {
       <Helmet>
         <title>Appointment</title>
       </Helmet>
+      {appointment.length > 0? (
+        <Grid container spacing={1}>
+          {appointment.map((a) => (
+            <React.Fragment>
+              <Grid item xs={12}>
+                <Paper>
+                  <Grid container>
+                    <Grid item xs={10}>
+                      <Typography>Customer Name: {a.name}</Typography>
 
-      <Grid container spacing={1}>
-        {appointment.map((a) => (
-          <React.Fragment>
-            <Grid item xs={12}>
-              <Paper>
-                <Grid container>
-                  <Grid item xs={10}>
-                    <Typography><b>Customer Name: </b>{a.name}</Typography>
+                      <Typography>Customer Phone: {a.phone}</Typography>
 
-                    <Typography><b>Phone Number: </b>{a.phone}</Typography>
+                      <Typography>Services: {a.service.join(", ")}</Typography>
 
-                    <Typography><b>Services: </b>{a.service.join(", ")}</Typography>
+                      <Typography>Date: {a.date}</Typography>
 
-                    <Typography><b>Appointment Time: </b>{a.time}</Typography>
+                      <Typography>From: {a.time_start} to {a.time_end}</Typography>
+                    </Grid>
+
+                    <Grid item xs={2}>
+                      <Button
+                        color="secondary"
+                        onClick={() => {
+                          onClickDelete(a);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                      <Button
+                        color="primary"
+                        onClick={() => {
+                          setEditDialog({
+                            isOpen: true,
+                            title: "Edit Appointment",
+                            subTitle: `Edit ${a.name}'s appointment, phone number: ${a.phone}`,
+                            service: a.service,
+                            id: a.id,
+                            usr_id: a.usr_id
+                          });
+                        }}
+                      >
+                        Edit
+                      </Button>
+                    </Grid>
                   </Grid>
+                </Paper>
 
-                  <Grid item xs={2}>
-                    <Button
-                      color="secondary"
-                      onClick={() => {
-                        onClickDelete(a);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        setEditDialog({
-                          isOpen: true,
-                          title: "Edit Appointment",
-                          subTitle: `Edit ${a.name}'s appointment, phone number: ${a.phone}`,
-                          service: a.service,
-                          time: a.time.replace(" ", "T"),
-                          id: a.id,
-                        });
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Paper>
-
-              {editDialog.isOpen ? (
-                <EditAppointment
-                  editDialog={editDialog}
-                  setEditDialog={setEditDialog}
-                />
-              ) : null}
-            </Grid>
-          </React.Fragment>
-        ))}
-      </Grid>
+                {editDialog.isOpen ? (
+                  <EditAppointment
+                    editDialog={editDialog}
+                    setEditDialog={setEditDialog}
+                  />
+                ) : null}
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>)
+        :
+        <Grid container justify="center">
+          <Grid item>
+            <Paper className={classes.Paper}>
+              <Typography>
+                No Upcoming Appointments
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      }
     </Grid>
   );
 }

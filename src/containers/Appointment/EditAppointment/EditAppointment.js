@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  Grid,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -11,6 +12,10 @@ import {
   FormControlLabel,
   TextField,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
@@ -20,8 +25,14 @@ function EditAppointment(props) {
   const { editDialog, setEditDialog } = props;
   const [alert, setAlert] = useState(false);
   const [services, setServices] = useState([]);
-  const [appointmentTime, setAppointmentTime] = useState(editDialog.time);
+  //const [appointmentTime, setAppointmentTime] = useState(editDialog.time);
   const [selectedServices, setSelectedServices] = useState([]);
+  const [empSchedule, setEmpSchedule] = useState([]);
+  const [dateList, setDateList] = useState([]);
+  const [timeList, setTimeList] = useState([]);
+  const [date, setDate] = useState("");
+  const [newAptId, setNewAptId] = useState(null);
+
   let allServices = [];
   let userServices = [];
 
@@ -37,6 +48,22 @@ function EditAppointment(props) {
         },
       });
       setServices(data.data);
+
+      var empScheduleRequest = await axios({
+        method: "GET",
+        url: "http://localhost:8000/getEmpTime",
+        setTimeout: 5000,
+        headers: {
+          authorization: `JWT ${token}`,
+        },
+      });
+      setEmpSchedule(empScheduleRequest.data);
+
+      let date = new Set();
+      for(let i = 0; i < empScheduleRequest.data.length; i++){
+        date.add(empScheduleRequest.data[i].date)
+      }
+      setDateList(Array.from(date));
 
       for (let i = 0; i < data.data.length; i++) {
         allServices.push(data.data[i]);
@@ -76,34 +103,40 @@ function EditAppointment(props) {
     console.log(selectedServices);
   };
 
-  const handleUpdate = () => {
+  async function handleUpdate(){
     if (selectedServices.length == 0) {
       setAlert(true);
       setTimeout(() => {
         setAlert(false);
       }, 3000);
     } else {
-      console.log()
-      const date = appointmentTime.split("T")[0];
-      const time = appointmentTime.split("T")[1];
       const token = Cookies.get("jwt");
-      axios.post("http://localhost:8000/editApt", {
-        id: editDialog.id,
-        date: date,
-        time: time,
-        services: selectedServices,
-      },
+      await axios.post("http://localhost:8000/editApt", {curId: editDialog.id, id: newAptId, userId: editDialog.usr_id, srvId: selectedServices},
       {
         headers: {
           authorization: `JWT ${token}`,
         },
       });
-      console.log(
-        `id: ${editDialog.id}, date: ${date}, time: ${time}, services: ${selectedServices}`
-      );
       setEditDialog({ ...editDialog, isOpen: false });
     }
   };
+
+  const handleChangeDate = (e) => {
+    setDate(e.target.value.split('T')[0]);
+    console.log(date)
+    let time = [];
+    empSchedule.map(es=> {
+      if(es.date == e.target.value){
+        time.push({aptId: es.id, aptTime: es.time_start + ' to ' + es.time_end});
+      }
+      console.log(time);
+    })
+    setTimeList(time);
+  }
+
+  const handleChangeTime = (e) =>{
+    setNewAptId(e.target.value)
+  }
 
   const handleClose = () => {
     setEditDialog({ ...editDialog, isOpen: false });
@@ -146,19 +179,48 @@ function EditAppointment(props) {
 
         <br />
 
-        <TextField
-          fullWidth
-          id="time"
-          label="Time"
-          type="datetime-local"
-          defaultValue={editDialog.time}
-          InputLabelProps={{ shrink: true }}
-          variant="outlined"
-          onChange={(e) => setAppointmentTime(e.target.value)}
-        />
+        <Grid item xs={12}>
+              <TextField
+                id="date"
+                fullWidth
+                select
+                label="Date"
+                //value={date}
+                onChange={handleChangeDate}
+                helperText="Please select an available date"
+                variant="filled"
+              >
+                {dateList.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option.split('T')[0]}
+                  </MenuItem>
+                ))}
+              </TextField>
+          </Grid>
+
+          <Grid item xs={12}>
+              <TextField
+                id="time"
+                fullWidth
+                select
+                label="Time"
+                //value={date}
+                onChange={handleChangeTime}
+                helperText="Please select an available time"
+                variant="filled"
+                disabled={date==""}
+              >
+                {timeList.map((option) => (
+                  <MenuItem key={option.aptId} value={option.aptId}>
+                    {option.aptTime}
+                  </MenuItem>
+                ))}
+              </TextField>
+          </Grid>
+
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleUpdate} color="primary">
+        <Button onClick={handleUpdate} color="primary" disabled={newAptId == null? true : false}>
           Update
         </Button>
         <Button onClick={handleClose} color="primary">
